@@ -1,6 +1,4 @@
-<!doctype html>
-<html lang="en">
-<head>
+<html lang="en"><head>
     <title>Code coverage report for node-npmtest-redis/redis/lib/multi.js</title>
     <meta charset="utf-8">
     <style>
@@ -210,11 +208,11 @@
         
         Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
     </h2>
-    <div class="path"><a href="../../../index.html">All files</a> &#187; <a href="index.html">node-npmtest-redis/redis/lib/</a> &#187; multi.js</div>
+    <div class="path"><a href="../../../index.html">All files</a> » <a href="index.html">node-npmtest-redis/redis/lib/</a> » multi.js</div>
 </div>
 <div class="body">
 <pre><table class="coverage">
-<tr><td class="line-count">1
+<tbody><tr><td class="line-count">1
 2
 3
 4
@@ -596,193 +594,194 @@ var Queue = require('double-ended-queue');
 var utils = require('./utils');
 var Command = require('./command');
 &nbsp;
-<span class="fstat-no" title="function not covered" >function Multi (client, args) {</span>
-<span class="cstat-no" title="statement not covered" >    this._client = client;</span>
-<span class="cstat-no" title="statement not covered" >    this.queue = new Queue();</span>
-<span class="cstat-no" title="statement not covered" >    var command, tmp_args;</span>
-<span class="cstat-no" title="statement not covered" >    if (args) { // Either undefined or an array. Fail hard if it's not an array</span>
-<span class="cstat-no" title="statement not covered" >        for (var i = 0; i &lt; args.length; i++) {</span>
-<span class="cstat-no" title="statement not covered" >            command = args[i][0];</span>
-<span class="cstat-no" title="statement not covered" >            tmp_args = args[i].slice(1);</span>
-<span class="cstat-no" title="statement not covered" >            if (Array.isArray(command)) {</span>
-<span class="cstat-no" title="statement not covered" >                this[command[0]].apply(this, command.slice(1).concat(tmp_args));</span>
+<span class="fstat-no" title="function not covered">function Multi (client, args) {</span>
+<span class="cstat-no" title="statement not covered">    this._client = client;</span>
+<span class="cstat-no" title="statement not covered">    this.queue = new Queue();</span>
+<span class="cstat-no" title="statement not covered">    var command, tmp_args;</span>
+<span class="cstat-no" title="statement not covered">    if (args) { // Either undefined or an array. Fail hard if it's not an array</span>
+<span class="cstat-no" title="statement not covered">        for (var i = 0; i &lt; args.length; i++) {</span>
+<span class="cstat-no" title="statement not covered">            command = args[i][0];</span>
+<span class="cstat-no" title="statement not covered">            tmp_args = args[i].slice(1);</span>
+<span class="cstat-no" title="statement not covered">            if (Array.isArray(command)) {</span>
+<span class="cstat-no" title="statement not covered">                this[command[0]].apply(this, command.slice(1).concat(tmp_args));</span>
             } else {
-<span class="cstat-no" title="statement not covered" >                this[command].apply(this, tmp_args);</span>
+<span class="cstat-no" title="statement not covered">                this[command].apply(this, tmp_args);</span>
             }
         }
     }
 }
 &nbsp;
-<span class="fstat-no" title="function not covered" >function pipeline_transaction_command (self, command_obj, index) {</span>
+<span class="fstat-no" title="function not covered">function pipeline_transaction_command (self, command_obj, index) {</span>
     // Queueing is done first, then the commands are executed
-<span class="cstat-no" title="statement not covered" >    var tmp = command_obj.callback;</span>
-<span class="cstat-no" title="statement not covered" >    command_obj.callback = <span class="fstat-no" title="function not covered" >function (err, reply) {</span></span>
+<span class="cstat-no" title="statement not covered">    var tmp = command_obj.callback;</span>
+<span class="cstat-no" title="statement not covered">    command_obj.callback = <span class="fstat-no" title="function not covered">function (err, reply) {</span></span>
         // Ignore the multi command. This is applied by node_redis and the user does not benefit by it
-<span class="cstat-no" title="statement not covered" >        if (err &amp;&amp; index !== -1) {</span>
-<span class="cstat-no" title="statement not covered" >            if (tmp) {</span>
-<span class="cstat-no" title="statement not covered" >                tmp(err);</span>
+<span class="cstat-no" title="statement not covered">        if (err &amp;&amp; index !== -1) {</span>
+<span class="cstat-no" title="statement not covered">            if (tmp) {</span>
+<span class="cstat-no" title="statement not covered">                tmp(err);</span>
             }
-<span class="cstat-no" title="statement not covered" >            err.position = index;</span>
-<span class="cstat-no" title="statement not covered" >            self.errors.push(err);</span>
+<span class="cstat-no" title="statement not covered">            err.position = index;</span>
+<span class="cstat-no" title="statement not covered">            self.errors.push(err);</span>
         }
         // Keep track of who wants buffer responses:
         // By the time the callback is called the command_obj got the buffer_args attribute attached
-<span class="cstat-no" title="statement not covered" >        self.wants_buffers[index] = command_obj.buffer_args;</span>
-<span class="cstat-no" title="statement not covered" >        command_obj.callback = tmp;</span>
+<span class="cstat-no" title="statement not covered">        self.wants_buffers[index] = command_obj.buffer_args;</span>
+<span class="cstat-no" title="statement not covered">        command_obj.callback = tmp;</span>
     };
-<span class="cstat-no" title="statement not covered" >    self._client.internal_send_command(command_obj);</span>
+<span class="cstat-no" title="statement not covered">    self._client.internal_send_command(command_obj);</span>
 }
 &nbsp;
-Multi.prototype.exec_atomic = Multi.prototype.EXEC_ATOMIC = Multi.prototype.execAtomic = <span class="fstat-no" title="function not covered" >function exec_atomic (callback) {</span>
-<span class="cstat-no" title="statement not covered" >    if (this.queue.length &lt; 2) {</span>
-<span class="cstat-no" title="statement not covered" >        return this.exec_batch(callback);</span>
+Multi.prototype.exec_atomic = Multi.prototype.EXEC_ATOMIC = Multi.prototype.execAtomic = <span class="fstat-no" title="function not covered">function exec_atomic (callback) {</span>
+<span class="cstat-no" title="statement not covered">    if (this.queue.length &lt; 2) {</span>
+<span class="cstat-no" title="statement not covered">        return this.exec_batch(callback);</span>
     }
-<span class="cstat-no" title="statement not covered" >    return this.exec(callback);</span>
+<span class="cstat-no" title="statement not covered">    return this.exec(callback);</span>
 };
 &nbsp;
-<span class="fstat-no" title="function not covered" >function multi_callback (self, err, replies) {</span>
-<span class="cstat-no" title="statement not covered" >    var i = 0, command_obj;</span>
+<span class="fstat-no" title="function not covered">function multi_callback (self, err, replies) {</span>
+<span class="cstat-no" title="statement not covered">    var i = 0, command_obj;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (err) {</span>
-<span class="cstat-no" title="statement not covered" >        err.errors = self.errors;</span>
-<span class="cstat-no" title="statement not covered" >        if (self.callback) {</span>
-<span class="cstat-no" title="statement not covered" >            self.callback(err);</span>
+<span class="cstat-no" title="statement not covered">    if (err) {</span>
+<span class="cstat-no" title="statement not covered">        err.errors = self.errors;</span>
+<span class="cstat-no" title="statement not covered">        if (self.callback) {</span>
+<span class="cstat-no" title="statement not covered">            self.callback(err);</span>
             // Exclude connection errors so that those errors won't be emitted twice
-        } else <span class="cstat-no" title="statement not covered" >if (err.code !== 'CONNECTION_BROKEN') {</span>
-<span class="cstat-no" title="statement not covered" >            self._client.emit('error', err);</span>
+        } else <span class="cstat-no" title="statement not covered">if (err.code !== 'CONNECTION_BROKEN') {</span>
+<span class="cstat-no" title="statement not covered">            self._client.emit('error', err);</span>
         }
-<span class="cstat-no" title="statement not covered" >        return;</span>
+<span class="cstat-no" title="statement not covered">        return;</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (replies) {</span>
-<span class="cstat-no" title="statement not covered" >        while (command_obj = self.queue.shift()) {</span>
-<span class="cstat-no" title="statement not covered" >            if (replies[i] instanceof Error) {</span>
-<span class="cstat-no" title="statement not covered" >                var match = replies[i].message.match(utils.err_code);</span>
+<span class="cstat-no" title="statement not covered">    if (replies) {</span>
+<span class="cstat-no" title="statement not covered">        while (command_obj = self.queue.shift()) {</span>
+<span class="cstat-no" title="statement not covered">            if (replies[i] instanceof Error) {</span>
+<span class="cstat-no" title="statement not covered">                var match = replies[i].message.match(utils.err_code);</span>
                 // LUA script could return user errors that don't behave like all other errors!
-<span class="cstat-no" title="statement not covered" >                if (match) {</span>
-<span class="cstat-no" title="statement not covered" >                    replies[i].code = match[1];</span>
+<span class="cstat-no" title="statement not covered">                if (match) {</span>
+<span class="cstat-no" title="statement not covered">                    replies[i].code = match[1];</span>
                 }
-<span class="cstat-no" title="statement not covered" >                replies[i].command = command_obj.command.toUpperCase();</span>
-<span class="cstat-no" title="statement not covered" >                if (typeof command_obj.callback === 'function') {</span>
-<span class="cstat-no" title="statement not covered" >                    command_obj.callback(replies[i]);</span>
+<span class="cstat-no" title="statement not covered">                replies[i].command = command_obj.command.toUpperCase();</span>
+<span class="cstat-no" title="statement not covered">                if (typeof command_obj.callback === 'function') {</span>
+<span class="cstat-no" title="statement not covered">                    command_obj.callback(replies[i]);</span>
                 }
             } else {
                 // If we asked for strings, even in detect_buffers mode, then return strings:
-<span class="cstat-no" title="statement not covered" >                replies[i] = self._client.handle_reply(replies[i], command_obj.command, self.wants_buffers[i]);</span>
-<span class="cstat-no" title="statement not covered" >                if (typeof command_obj.callback === 'function') {</span>
-<span class="cstat-no" title="statement not covered" >                    command_obj.callback(null, replies[i]);</span>
+<span class="cstat-no" title="statement not covered">                replies[i] = self._client.handle_reply(replies[i], command_obj.command, self.wants_buffers[i]);</span>
+<span class="cstat-no" title="statement not covered">                if (typeof command_obj.callback === 'function') {</span>
+<span class="cstat-no" title="statement not covered">                    command_obj.callback(null, replies[i]);</span>
                 }
             }
-<span class="cstat-no" title="statement not covered" >            i++;</span>
+<span class="cstat-no" title="statement not covered">            i++;</span>
         }
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (self.callback) {</span>
-<span class="cstat-no" title="statement not covered" >        self.callback(null, replies);</span>
+<span class="cstat-no" title="statement not covered">    if (self.callback) {</span>
+<span class="cstat-no" title="statement not covered">        self.callback(null, replies);</span>
     }
 }
 &nbsp;
-Multi.prototype.exec_transaction = <span class="fstat-no" title="function not covered" >function exec_transaction (callback) {</span>
-<span class="cstat-no" title="statement not covered" >    if (this.monitoring || this._client.monitoring) {</span>
-<span class="cstat-no" title="statement not covered" >        var err = new RangeError(</span>
+Multi.prototype.exec_transaction = <span class="fstat-no" title="function not covered">function exec_transaction (callback) {</span>
+<span class="cstat-no" title="statement not covered">    if (this.monitoring || this._client.monitoring) {</span>
+<span class="cstat-no" title="statement not covered">        var err = new RangeError(</span>
             'Using transaction with a client that is in monitor mode does not work due to faulty return values of Redis.'
         );
-<span class="cstat-no" title="statement not covered" >        err.command = 'EXEC';</span>
-<span class="cstat-no" title="statement not covered" >        err.code = 'EXECABORT';</span>
-<span class="cstat-no" title="statement not covered" >        return utils.reply_in_order(this._client, callback, err);</span>
+<span class="cstat-no" title="statement not covered">        err.command = 'EXEC';</span>
+<span class="cstat-no" title="statement not covered">        err.code = 'EXECABORT';</span>
+<span class="cstat-no" title="statement not covered">        return utils.reply_in_order(this._client, callback, err);</span>
     }
-<span class="cstat-no" title="statement not covered" >    var self = this;</span>
-<span class="cstat-no" title="statement not covered" >    var len = self.queue.length;</span>
-<span class="cstat-no" title="statement not covered" >    self.errors = [];</span>
-<span class="cstat-no" title="statement not covered" >    self.callback = callback;</span>
-<span class="cstat-no" title="statement not covered" >    self._client.cork();</span>
-<span class="cstat-no" title="statement not covered" >    self.wants_buffers = new Array(len);</span>
-<span class="cstat-no" title="statement not covered" >    pipeline_transaction_command(self, new Command('multi', []), -1);</span>
+<span class="cstat-no" title="statement not covered">    var self = this;</span>
+<span class="cstat-no" title="statement not covered">    var len = self.queue.length;</span>
+<span class="cstat-no" title="statement not covered">    self.errors = [];</span>
+<span class="cstat-no" title="statement not covered">    self.callback = callback;</span>
+<span class="cstat-no" title="statement not covered">    self._client.cork();</span>
+<span class="cstat-no" title="statement not covered">    self.wants_buffers = new Array(len);</span>
+<span class="cstat-no" title="statement not covered">    pipeline_transaction_command(self, new Command('multi', []), -1);</span>
     // Drain queue, callback will catch 'QUEUED' or error
-<span class="cstat-no" title="statement not covered" >    for (var index = 0; index &lt; len; index++) {</span>
+<span class="cstat-no" title="statement not covered">    for (var index = 0; index &lt; len; index++) {</span>
         // The commands may not be shifted off, since they are needed in the result handler
-<span class="cstat-no" title="statement not covered" >        pipeline_transaction_command(self, self.queue.get(index), index);</span>
+<span class="cstat-no" title="statement not covered">        pipeline_transaction_command(self, self.queue.get(index), index);</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    self._client.internal_send_command(new Command('exec', [], <span class="fstat-no" title="function not covered" >function (err, replies) {</span></span>
-<span class="cstat-no" title="statement not covered" >        multi_callback(self, err, replies);</span>
+<span class="cstat-no" title="statement not covered">    self._client.internal_send_command(new Command('exec', [], <span class="fstat-no" title="function not covered">function (err, replies) {</span></span>
+<span class="cstat-no" title="statement not covered">        multi_callback(self, err, replies);</span>
     }));
-<span class="cstat-no" title="statement not covered" >    self._client.uncork();</span>
-<span class="cstat-no" title="statement not covered" >    return !self._client.should_buffer;</span>
+<span class="cstat-no" title="statement not covered">    self._client.uncork();</span>
+<span class="cstat-no" title="statement not covered">    return !self._client.should_buffer;</span>
 };
 &nbsp;
-<span class="fstat-no" title="function not covered" >function batch_callback (self, cb, i) {</span>
-<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >function batch_callback (err, res) {</span></span>
-<span class="cstat-no" title="statement not covered" >        if (err) {</span>
-<span class="cstat-no" title="statement not covered" >            self.results[i] = err;</span>
+<span class="fstat-no" title="function not covered">function batch_callback (self, cb, i) {</span>
+<span class="cstat-no" title="statement not covered">    return <span class="fstat-no" title="function not covered">function batch_callback (err, res) {</span></span>
+<span class="cstat-no" title="statement not covered">        if (err) {</span>
+<span class="cstat-no" title="statement not covered">            self.results[i] = err;</span>
             // Add the position to the error
-<span class="cstat-no" title="statement not covered" >            self.results[i].position = i;</span>
+<span class="cstat-no" title="statement not covered">            self.results[i].position = i;</span>
         } else {
-<span class="cstat-no" title="statement not covered" >            self.results[i] = res;</span>
+<span class="cstat-no" title="statement not covered">            self.results[i] = res;</span>
         }
-<span class="cstat-no" title="statement not covered" >        cb(err, res);</span>
+<span class="cstat-no" title="statement not covered">        cb(err, res);</span>
     };
 }
 &nbsp;
-Multi.prototype.exec = Multi.prototype.EXEC = Multi.prototype.exec_batch = <span class="fstat-no" title="function not covered" >function exec_batch (callback) {</span>
-<span class="cstat-no" title="statement not covered" >    var self = this;</span>
-<span class="cstat-no" title="statement not covered" >    var len = self.queue.length;</span>
-<span class="cstat-no" title="statement not covered" >    var index = 0;</span>
-<span class="cstat-no" title="statement not covered" >    var command_obj;</span>
-<span class="cstat-no" title="statement not covered" >    if (len === 0) {</span>
-<span class="cstat-no" title="statement not covered" >        utils.reply_in_order(self._client, callback, null, []);</span>
-<span class="cstat-no" title="statement not covered" >        return !self._client.should_buffer;</span>
+Multi.prototype.exec = Multi.prototype.EXEC = Multi.prototype.exec_batch = <span class="fstat-no" title="function not covered">function exec_batch (callback) {</span>
+<span class="cstat-no" title="statement not covered">    var self = this;</span>
+<span class="cstat-no" title="statement not covered">    var len = self.queue.length;</span>
+<span class="cstat-no" title="statement not covered">    var index = 0;</span>
+<span class="cstat-no" title="statement not covered">    var command_obj;</span>
+<span class="cstat-no" title="statement not covered">    if (len === 0) {</span>
+<span class="cstat-no" title="statement not covered">        utils.reply_in_order(self._client, callback, null, []);</span>
+<span class="cstat-no" title="statement not covered">        return !self._client.should_buffer;</span>
     }
-<span class="cstat-no" title="statement not covered" >    self._client.cork();</span>
-<span class="cstat-no" title="statement not covered" >    if (!callback) {</span>
-<span class="cstat-no" title="statement not covered" >        while (command_obj = self.queue.shift()) {</span>
-<span class="cstat-no" title="statement not covered" >            self._client.internal_send_command(command_obj);</span>
+<span class="cstat-no" title="statement not covered">    self._client.cork();</span>
+<span class="cstat-no" title="statement not covered">    if (!callback) {</span>
+<span class="cstat-no" title="statement not covered">        while (command_obj = self.queue.shift()) {</span>
+<span class="cstat-no" title="statement not covered">            self._client.internal_send_command(command_obj);</span>
         }
-<span class="cstat-no" title="statement not covered" >        self._client.uncork();</span>
-<span class="cstat-no" title="statement not covered" >        return !self._client.should_buffer;</span>
+<span class="cstat-no" title="statement not covered">        self._client.uncork();</span>
+<span class="cstat-no" title="statement not covered">        return !self._client.should_buffer;</span>
     }
-<span class="cstat-no" title="statement not covered" >    var callback_without_own_cb = <span class="fstat-no" title="function not covered" >function (err, res) {</span></span>
-<span class="cstat-no" title="statement not covered" >        if (err) {</span>
-<span class="cstat-no" title="statement not covered" >            self.results.push(err);</span>
+<span class="cstat-no" title="statement not covered">    var callback_without_own_cb = <span class="fstat-no" title="function not covered">function (err, res) {</span></span>
+<span class="cstat-no" title="statement not covered">        if (err) {</span>
+<span class="cstat-no" title="statement not covered">            self.results.push(err);</span>
             // Add the position to the error
-<span class="cstat-no" title="statement not covered" >            var i = self.results.length - 1;</span>
-<span class="cstat-no" title="statement not covered" >            self.results[i].position = i;</span>
+<span class="cstat-no" title="statement not covered">            var i = self.results.length - 1;</span>
+<span class="cstat-no" title="statement not covered">            self.results[i].position = i;</span>
         } else {
-<span class="cstat-no" title="statement not covered" >            self.results.push(res);</span>
+<span class="cstat-no" title="statement not covered">            self.results.push(res);</span>
         }
         // Do not emit an error here. Otherwise each error would result in one emit.
         // The errors will be returned in the result anyway
     };
-<span class="cstat-no" title="statement not covered" >    var last_callback = <span class="fstat-no" title="function not covered" >function (cb) {</span></span>
-<span class="cstat-no" title="statement not covered" >        return <span class="fstat-no" title="function not covered" >function (err, res) {</span></span>
-<span class="cstat-no" title="statement not covered" >            cb(err, res);</span>
-<span class="cstat-no" title="statement not covered" >            callback(null, self.results);</span>
+<span class="cstat-no" title="statement not covered">    var last_callback = <span class="fstat-no" title="function not covered">function (cb) {</span></span>
+<span class="cstat-no" title="statement not covered">        return <span class="fstat-no" title="function not covered">function (err, res) {</span></span>
+<span class="cstat-no" title="statement not covered">            cb(err, res);</span>
+<span class="cstat-no" title="statement not covered">            callback(null, self.results);</span>
         };
     };
-<span class="cstat-no" title="statement not covered" >    self.results = [];</span>
-<span class="cstat-no" title="statement not covered" >    while (command_obj = self.queue.shift()) {</span>
-<span class="cstat-no" title="statement not covered" >        if (typeof command_obj.callback === 'function') {</span>
-<span class="cstat-no" title="statement not covered" >            command_obj.callback = batch_callback(self, command_obj.callback, index);</span>
+<span class="cstat-no" title="statement not covered">    self.results = [];</span>
+<span class="cstat-no" title="statement not covered">    while (command_obj = self.queue.shift()) {</span>
+<span class="cstat-no" title="statement not covered">        if (typeof command_obj.callback === 'function') {</span>
+<span class="cstat-no" title="statement not covered">            command_obj.callback = batch_callback(self, command_obj.callback, index);</span>
         } else {
-<span class="cstat-no" title="statement not covered" >            command_obj.callback = callback_without_own_cb;</span>
+<span class="cstat-no" title="statement not covered">            command_obj.callback = callback_without_own_cb;</span>
         }
-<span class="cstat-no" title="statement not covered" >        if (typeof callback === 'function' &amp;&amp; index === len - 1) {</span>
-<span class="cstat-no" title="statement not covered" >            command_obj.callback = last_callback(command_obj.callback);</span>
+<span class="cstat-no" title="statement not covered">        if (typeof callback === 'function' &amp;&amp; index === len - 1) {</span>
+<span class="cstat-no" title="statement not covered">            command_obj.callback = last_callback(command_obj.callback);</span>
         }
-<span class="cstat-no" title="statement not covered" >        this._client.internal_send_command(command_obj);</span>
-<span class="cstat-no" title="statement not covered" >        index++;</span>
+<span class="cstat-no" title="statement not covered">        this._client.internal_send_command(command_obj);</span>
+<span class="cstat-no" title="statement not covered">        index++;</span>
     }
-<span class="cstat-no" title="statement not covered" >    self._client.uncork();</span>
-<span class="cstat-no" title="statement not covered" >    return !self._client.should_buffer;</span>
+<span class="cstat-no" title="statement not covered">    self._client.uncork();</span>
+<span class="cstat-no" title="statement not covered">    return !self._client.should_buffer;</span>
 };
 &nbsp;
 module.exports = Multi;
 &nbsp;
 &nbsp;</pre></td></tr>
-</table></pre>
+</tbody></table></pre>
 </div>
 <div class="footer">
     <div class="meta">Generated by <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a> at Sat Apr 15 2017 21:26:46 GMT+0000 (UTC)</div>
 </div>
-</body>
-</html>
+
+
+</body></html>
