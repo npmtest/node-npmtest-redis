@@ -1,6 +1,6 @@
 # npmtest-redis
 
-#### test coverage for  [redis (v2.7.1)](https://github.com/NodeRedis/node_redis)  [![npm package](https://img.shields.io/npm/v/npmtest-redis.svg?style=flat-square)](https://www.npmjs.org/package/npmtest-redis) [![travis-ci.org build-status](https://api.travis-ci.org/npmtest/node-npmtest-redis.svg)](https://travis-ci.org/npmtest/node-npmtest-redis)
+#### basic test coverage for  [redis (v2.7.1)](https://github.com/NodeRedis/node_redis)  [![npm package](https://img.shields.io/npm/v/npmtest-redis.svg?style=flat-square)](https://www.npmjs.org/package/npmtest-redis) [![travis-ci.org build-status](https://api.travis-ci.org/npmtest/node-npmtest-redis.svg)](https://travis-ci.org/npmtest/node-npmtest-redis)
 
 #### Redis client library
 
@@ -10,7 +10,7 @@
 |--:|:--|
 | coverage : | [![istanbul-coverage](https://npmtest.github.io/node-npmtest-redis/build/coverage.badge.svg)](https://npmtest.github.io/node-npmtest-redis/build/coverage.html/index.html)|
 | test-report : | [![test-report](https://npmtest.github.io/node-npmtest-redis/build/test-report.badge.svg)](https://npmtest.github.io/node-npmtest-redis/build/test-report.html)|
-| build-artifacts : | [![build-artifacts](https://npmtest.github.io/node-npmtest-redis/glyphicons_144_folder_open.png)](https://github.com/npmtest/node-npmtest-redis/tree/gh-pages/build)|
+| test-server-github : | [![github.com test-server](https://npmtest.github.io/node-npmtest-redis/GitHub-Mark-32px.png)](https://npmtest.github.io/node-npmtest-redis/build/app/index.html) | | build-artifacts : | [![build-artifacts](https://npmtest.github.io/node-npmtest-redis/glyphicons_144_folder_open.png)](https://github.com/npmtest/node-npmtest-redis/tree/gh-pages/build)|
 
 - [https://npmtest.github.io/node-npmtest-redis/build/coverage.html/index.html](https://npmtest.github.io/node-npmtest-redis/build/coverage.html/index.html)
 
@@ -113,7 +113,8 @@
         "lint": "eslint . --fix && npm run coverage",
         "test": "nyc --cache mocha ./test/*.js ./test/commands/*.js --timeout=8000"
     },
-    "version": "2.7.1"
+    "version": "2.7.1",
+    "bin": {}
 }
 ```
 
